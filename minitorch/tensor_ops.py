@@ -25,19 +25,19 @@ class MapProto(Protocol):
 
 class TensorOps:
     @staticmethod
-    def map(fn: Callable[[float], float]) -> MapProto:
+    def map(fn: Callable[[float], float]) -> None:
         pass
 
     @staticmethod
-    def cmap(fn: Callable[[float], float]) -> Callable[[Tensor, Tensor], Tensor]:
+    def cmap(fn: Callable[[float], float]) -> None:
         pass
 
     @staticmethod
-    def zip(fn: Callable[[float, float], float]) -> Callable[[Tensor, Tensor], Tensor]:
+    def zip(fn: Callable[[float, float], float]) -> None:
         pass
 
     @staticmethod
-    def reduce(fn: Callable[[float, float], float], start: float = 0.0) -> Callable[[Tensor, int], Tensor]:
+    def reduce(fn: Callable[[float, float], float], start: float = 0.0) -> None:
         pass
 
     @staticmethod
