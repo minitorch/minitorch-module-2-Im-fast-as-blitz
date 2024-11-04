@@ -154,7 +154,7 @@ class Exp(Function):
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
         t1, = ctx.saved_values
-        return grad_output * t1.f.exp_map(t1)
+        return t1.f.mul_zip(grad_output, t1.f.exp_map(t1))
 
 
 class Sum(Function):
@@ -212,7 +212,7 @@ class Permute(Function):
     @staticmethod
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         ctx.save_for_backward(order)
-        
+
         storage, shape, strides = a._tensor.permute(*tuple([int(order[i]) for i in range(order.size)])).tuple()
 
         new_shape = tuple([int(shape[i]) for i in range(shape.size)])

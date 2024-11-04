@@ -104,7 +104,7 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
         IndexingError : if cannot broadcast
     """
     if len(shape1) > len(shape2):
-        shape2 = (1,) * (len(shape1) - len(shape2)) + tuple(shape2)   
+        shape2 = (1,) * (len(shape1) - len(shape2)) + tuple(shape2)
     else:
         shape1 = (1,) * (len(shape2) - len(shape1)) + tuple(shape1)
 
