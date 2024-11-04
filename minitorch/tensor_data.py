@@ -86,7 +86,7 @@ def broadcast_index(
         None
     """
     for i in np.arange(shape.size - 1, -1, -1):
-        out_index[i] = big_index[i + len(big_shape) - len(shape)] if shape[i] == 1 else 0
+        out_index[i] = big_index[i + len(big_shape) - len(shape)] if shape[i] != 1 else 0
 
 
 def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:

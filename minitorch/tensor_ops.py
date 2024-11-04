@@ -268,8 +268,14 @@ def tensor_map(fn: Callable[[float], float]) -> Any:
         in_shape: Shape,
         in_strides: Strides,
     ) -> None:
-        # TODO: Implement for Task 2.3.
-        raise NotImplementedError("Need to implement for Task 2.3")
+        out_index = np.zeros(len(out_shape))
+        in_index = np.zeros(len(in_shape))
+
+        for i in range(len(out)):
+            to_index(i, out_shape, out_index)
+            broadcast_index(out_index, out_shape, in_shape, in_index)
+            curr_ind = index_to_position(out_index, out_strides)
+            out[curr_ind] = fn(in_storage[index_to_position(in_index, in_strides)])
 
     return _map
 
@@ -318,8 +324,19 @@ def tensor_zip(fn: Callable[[float, float], float]) -> Any:
         b_shape: Shape,
         b_strides: Strides,
     ) -> None:
-        # TODO: Implement for Task 2.3.
-        raise NotImplementedError("Need to implement for Task 2.3")
+        out_index = np.zeros(len(out_shape))
+        a_index = np.zeros(len(a_shape))
+        b_index = np.zeros(len(b_shape))
+
+        for i in range(out.size):
+            to_index(i, out_shape, out_index)
+            broadcast_index(out_index, out_shape, a_shape, a_index)
+            broadcast_index(out_index, out_shape, b_shape, b_index)
+
+            val_a = a_storage[index_to_position(a_index, a_strides)]
+            val_b = b_storage[index_to_position(b_index, b_strides)]
+            curr_ind = index_to_position(out_index, out_strides)
+            out[curr_ind] = fn(val_a, val_b)
 
     return _zip
 
@@ -354,8 +371,18 @@ def tensor_reduce(fn: Callable[[float, float], float]) -> Any:
         a_strides: Strides,
         reduce_dim: int,
     ) -> None:
-        # TODO: Implement for Task 2.3.
-        raise NotImplementedError("Need to implement for Task 2.3")
+        index = np.zeros(len(out_shape))
+        a_stride = a_strides[reduce_dim]
+        a_len = a_stride * a_shape[reduce_dim]
+
+        for i in range(len(out)):
+            to_index(i, out_shape, index)
+
+            a_start_ind = index_to_position(index, a_strides)
+            out_ind = index_to_position(index, out_strides)
+
+            for ind in np.arange(a_start_ind, a_start_ind + a_len, a_stride):
+                out[out_ind] = fn(a_storage[ind], out[out_ind])
 
     return _reduce
 

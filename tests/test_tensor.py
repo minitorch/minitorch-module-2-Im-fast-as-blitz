@@ -217,7 +217,6 @@ def test_reduce_forward_one_dim_2() -> None:
 def test_reduce_forward_all_dims() -> None:
     # shape (3, 2)
     t = tensor([[2, 3], [4, 6], [5, 7]])
-
     # reduce all dims, (3 -> 1, 2 -> 1)
     t_summed_all = t.sum()
 
