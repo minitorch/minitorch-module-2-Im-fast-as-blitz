@@ -66,29 +66,29 @@ class Function:
 
 class Neg(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         return t1.f.neg_map(t1)
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         return grad_output.f.neg_map(grad_output)
 
 
 class Inv(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         ctx.save_for_backward(t1)
         return t1.f.inv_map(t1)
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         (t1,) = ctx.saved_values
         return grad_output.f.inv_back_zip(t1, grad_output)
 
 
 class Add(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor, t2: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor, t2: Tensor) -> Any:
         return t1.f.add_zip(t1, t2)
 
     @staticmethod
@@ -98,7 +98,7 @@ class Add(Function):
 
 class Mul(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, b: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, b: Tensor) -> Any:
         ctx.save_for_backward(a, b)
         return a.f.mul_zip(a, b)
 
@@ -110,25 +110,25 @@ class Mul(Function):
 
 class Sigmoid(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         res = t1.f.sigmoid_map(t1)
         ctx.save_for_backward(res)
         return res
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         t1, = ctx.saved_values
         return grad_output.f.mul_zip(grad_output, t1 * (tensor([1]) - t1))
 
 
 class ReLU(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         ctx.save_for_backward(t1)
         return t1.f.relu_map(t1)
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         t1, = ctx.saved_tensors
         return grad_output.f.relu_back_zip(t1, grad_output)
 
@@ -140,14 +140,14 @@ class Log(Function):
         return t1.f.log_map(t1)
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         t1, = ctx.saved_tensors
         return grad_output.f.log_back_zip(t1, grad_output)
 
 
 class Exp(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         ctx.save_for_backward(t1)
         return t1.f.exp_map(t1)
 
@@ -159,7 +159,7 @@ class Exp(Function):
 
 class Sum(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, dim: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, dim: Tensor) -> Any:
         ctx.save_for_backward(a.shape, dim)
         return a.f.add_reduce(a, int(dim.item()))
 
@@ -171,7 +171,7 @@ class Sum(Function):
 
 class All(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, dim: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, dim: Tensor) -> Any:
         if dim is not None:
             return a.f.mul_reduce(a, int(dim.item()))
         else:
@@ -180,7 +180,7 @@ class All(Function):
 
 class LT(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, b: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, b: Tensor) -> Any:
         ctx.save_for_backward(a, b)
         return a.f.lt_zip(a, b)
 
@@ -192,7 +192,7 @@ class LT(Function):
 
 class EQ(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, b: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, b: Tensor) -> Any:
         ctx.save_for_backward(a, b)
         return a.f.eq_zip(a, b)
 
@@ -204,7 +204,7 @@ class EQ(Function):
 
 class IsClose(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor, b: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor, b: Tensor) -> Any:
         return a.f.is_close_zip(a, b)
 
 
@@ -255,7 +255,7 @@ class View(Function):
 
 class Copy(Function):
     @staticmethod
-    def forward(ctx: Context, a: Tensor) -> Tensor:
+    def forward(ctx: Context, a: Tensor) -> Any:
         return a.f.id_map(a)
 
     @staticmethod
