@@ -135,7 +135,7 @@ class ReLU(Function):
 
 class Log(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor) -> Tensor:
+    def forward(ctx: Context, t1: Tensor) -> Any:
         ctx.save_for_backward(t1)
         return t1.f.log_map(t1)
 
