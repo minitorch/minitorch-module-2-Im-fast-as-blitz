@@ -152,7 +152,7 @@ class Exp(Function):
         return t1.f.exp_map(t1)
 
     @staticmethod
-    def backward(ctx: Context, grad_output: Tensor) -> Tensor:
+    def backward(ctx: Context, grad_output: Tensor) -> Any:
         t1, = ctx.saved_values
         return t1.f.mul_zip(grad_output, t1.f.exp_map(t1))
 
