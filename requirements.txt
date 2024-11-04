@@ -10,3 +10,4 @@ pytest-env
 pytest-runner == 5.2
 typing_extensions
 mypy
+altair<5
